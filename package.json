@@ -1,0 +1,22 @@
+{
+  "name": "teste",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js",
+    "build:win": "pkg server.js --targets node18-win-x64 --assets \"views/**/*\" --assets \"public/**/*\" --assets \"config.json\" --assets \"twitch.json\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "axios": "^1.8.4",
+    "express": "^5.1.0",
+    "express-handlebars": "^8.0.1",
+    "nodemon": "^3.1.9",
+    "socket.io": "^4.8.1",
+    "tmi.js": "^1.8.5"
+  }
+}

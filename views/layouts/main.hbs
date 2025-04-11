@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>🎮 Bot da Twitch <div id="nomeUsuario"></div></h1>
+    <button onclick="enviarMensagens()">Envia Mensagem</button>
+    <div class="logs">
+      <div class="div-por-log">
+        <h1>Menssagem</h1>
+        <pre class="log" id="log"></pre>
+
+      </div>
+      <div class="div-por-log">
+        <h1>Vitórias</h1>
+        <pre class="log" id="log2"></pre>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="canais" id="canais"></div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const logArea = document.getElementById('log');
+    const socket = io();
+    async function lerArquivo() {
+      const response = await fetch('/getJson')
+      let canaisJson = await response.json()
+      let canais = document.getElementById('canais');
+      canaisJson.map(e => {
+      const item = document.createElement('div');
+      item.textContent = e.canal
+      canais.appendChild(item)
+      })
+      
+    }
+    lerArquivo()
+    // Escuta mensagens do servidor (incluindo as do bot da Twitch)
+    socket.on('chat message', function (msg) {
+      console.log("🦝 ~ msg:", msg)
+      const messages = document.getElementById('log');
+      const item = document.createElement('li');
+      item.textContent = msg;
+      messages.appendChild(item);
+    });
+
+    socket.on('log win', function (msg) {
+      console.log("🦝 ~ msg:", msg)
+      const messages = document.getElementById('log2');
+      const item = document.createElement('li');
+      item.textContent = msg;
+      messages.appendChild(item);
+    });
+
+    function log(message) {
+      const messages = document.getElementById('log');
+      const item = document.createElement('li');
+      item.textContent = message;
+      messages.appendChild(item);
+
+    }
+
+    async function enviarMensagens() {
+      const res = await fetch('/enviar');
+      log('✅ Finalizou envio de mensagens')
+    }
+  </script>
+</body>
+
+</html>
